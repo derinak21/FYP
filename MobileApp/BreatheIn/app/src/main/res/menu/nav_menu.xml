@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Edit_Details"
+        android:icon="@drawable/baseline_mode_edit_24"
+        android:title="Edit Details" />
+
+    <item
+        android:id="@+id/Logout"
+        android:icon="@drawable/baseline_logout_24"
+        android:title="Log Out" />
+
+
+
+</menu>

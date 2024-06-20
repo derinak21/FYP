@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter your personal information"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="100dp"
+        android:textSize="20dp"/>
+
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="140dp"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="205dp"
+        android:text="Gender:"
+        android:textSize="18dp" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="200dp"
+        android:textSize="20sp"
+        android:padding="8dp"
+        android:entries="@array/gender_array"/>
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="245dp"
+        android:text="Age:"
+        android:textSize="18dp" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="240dp"
+        android:textSize="20dp"
+        android:padding="8dp"
+        android:entries="@array/age_array"/>
+
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="285dp"
+        android:text="Medical \nCondition:"
+        android:textSize="18dp" />
+
+    <Spinner
+        android:id="@+id/spinner3"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="285dp"
+        android:textSize="20dp"
+        android:padding="8dp"
+        android:entries="@array/medical_conditions"/>
+
+    <TextView
+        android:id="@+id/text5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="345dp"
+        android:text="Smoking \nStatus:"
+        android:textSize="18dp" />
+
+    <Spinner
+        android:id="@+id/spinner4"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="345dp"
+        android:textSize="20dp"
+        android:padding="8dp"
+        android:entries="@array/smoker_status"/>
+
+    <TextView
+        android:id="@+id/text6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="405dp"
+        android:text="Triggers:"
+        android:textSize="18dp" />
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="620dp"
+        android:background="#1D4581"
+        android:textColor="#FFFFFF"
+        android:onClick="navigateToAccountFragment"/>
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperature"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="425dp"
+        android:textSize="14dp"/>
+
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humidity"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="445dp"
+        android:textSize="14dp"/>
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PM2.5"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="425dp"
+        android:textSize="14dp"/>
+
+
+    <CheckBox
+        android:id="@+id/checkBox4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PM10"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="445dp"
+        android:textSize="14dp"/>
+
+    <CheckBox
+        android:id="@+id/checkBox5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sulfur Dioxide"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="425dp"
+        android:textSize="14dp"/>
+
+
+    <CheckBox
+        android:id="@+id/checkBox6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nitrogen Dioxide"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="455dp"
+        android:textSize="14dp"/>
+
+    <CheckBox
+        android:id="@+id/checkBox7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Volatile Organic Compounds"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="465dp"
+        android:textSize="14dp"/>
+
+    <CheckBox
+        android:id="@+id/checkBox8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Carbon Monoxide"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="485dp"
+        android:textSize="14dp"/>
+
+    <EditText
+        android:id="@+id/editTextText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Resting Heart Rate"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="525dp"
+        android:textSize="20dp"/>
+
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Device ID"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="565dp"
+        android:textSize="20dp"/>
+
+
+
+</RelativeLayout>

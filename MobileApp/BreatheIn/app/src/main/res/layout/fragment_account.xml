@@ -1,0 +1,246 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3E6F0F4"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AccountFragment">
+
+    <FrameLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#ffffff"
+            app:cardCornerRadius="20dp" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="120dp"
+                android:layout_height="160dp"
+                android:src="@drawable/logo"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_marginLeft="180dp"
+                android:layout_marginTop="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome Derin!"
+                android:layout_toRightOf="@+id/space3"
+                android:layout_below="@+id/space4"
+                android:textStyle="bold"
+                android:textSize="22dp"/>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView1"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="240dp"
+            app:cardBackgroundColor="#ffffff"
+            app:cardCornerRadius="20dp" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medical Information"
+                android:layout_toRightOf="@+id/space3"
+                android:layout_below="@+id/space4"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age: -"
+                android:layout_toRightOf="@+id/space3"
+                android:layout_below="@+id/space4"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender: -"
+                android:layout_toRightOf="@+id/space3"
+                android:layout_below="@+id/space4"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="130dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medical conditions: -"
+                android:layout_toRightOf="@+id/space3"
+                android:layout_below="@+id/space4"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="160dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Smoker status: -"
+                android:layout_toRightOf="@+id/space3"
+                android:layout_below="@+id/space4"
+                android:textSize="15dp"/>
+        </androidx.cardview.widget.CardView>
+
+
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="490dp"
+
+            app:cardBackgroundColor="#ffffff"
+            app:cardCornerRadius="20dp" >
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Track your improvement"
+                android:layout_toRightOf="@+id/space3"
+                android:layout_below="@+id/space4"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:layout_marginTop="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/space2"
+                android:layout_below="@+id/space5"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="900dp"/>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView4"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="150dp"
+            app:cardBackgroundColor="#ffffff"
+            android:visibility="gone"
+            app:cardCornerRadius="20dp" >
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date Information"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/score1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exercise Score:"
+                android:layout_marginTop="70dp"
+                android:layout_marginStart="20dp"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/donutChart"
+                android:layout_marginTop="70dp"
+                android:layout_marginLeft="180dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
+
+            <TextView
+                android:id="@+id/score2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inhaler Score:"
+                android:layout_marginTop="180dp"
+                android:layout_marginStart="20dp"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/donutChart2"
+                android:layout_marginTop="180dp"
+                android:layout_marginLeft="180dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
+
+            <TextView
+                android:id="@+id/actualscore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="80"
+                android:layout_marginTop="100dp"
+                android:layout_marginStart="210dp"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/actualscore2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="80"
+                android:layout_marginTop="210dp"
+                android:layout_marginStart="210dp"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="300dp"
+                android:layout_marginStart="200dp"
+                android:text="CLOSE" />
+
+        </androidx.cardview.widget.CardView>
+
+
+
+    </FrameLayout>
+</ScrollView>

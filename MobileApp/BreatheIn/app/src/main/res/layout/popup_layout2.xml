@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView6"
+        android:layout_width="300dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_height="360dp"
+        app:cardBackgroundColor="#346A7D"
+        app:cardCornerRadius="10dp"
+        android:layout_marginTop="20dp"
+        app:cardElevation="4dp">
+
+        <TextView
+            android:layout_width="280dp"
+            android:layout_height="440dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp"
+            android:text="
+    PM10 examples: dust, pollen, mold \n
+    \n
+    PM2.5 examples: combustion particles, compounds, metals, smoke and soot, emissions \n
+    \n
+    People with asthma are at greater risk from breathing in small particles and irritating gases. They can irritate the airways and make asthma worse. \n
+    \n
+    Ozone (O3): Ozone triggers asthma because it is very irritating to the lungs and airways. \n
+    \n
+    Nitrogen dioxide (NO2) comes from burning fuels. Breathing in NO2 can cause someone to develop asthma. It can worsen lung disease, especially asthma. \n
+    \n
+    Sulfur dioxide (SO2) can harm your lungs and lead to health problems. \n
+    \n
+    Carbon monoxide (CO) has no smell. It can be very dangerous when it builds up inside buildings." />
+
+
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+</RelativeLayout>

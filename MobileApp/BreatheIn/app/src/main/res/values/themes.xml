@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Light theme -->
+    <style name="Base.Theme.BreatheIn" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">#0F4D66</item>
+        <item name="colorSecondary">#072B3B</item>
+        <item name="colorTertiary">#346A7D</item>
+        <!-- Add more custom colors as needed -->
+    </style>
+
+    <!-- Dark theme -->
+    <style name="Base.Theme.BreatheIn.Dark" parent="Base.Theme.BreatheIn">
+        <!-- Customize dark theme attributes -->
+        <item name="colorPrimary">#0F4D66</item>
+        <item name="colorSecondary">#072B3B</item>
+        <item name="colorTertiary">#346A7D</item>
+    </style>
+
+    <!-- Combined theme -->
+    <style name="Theme.BreatheIn" parent="Base.Theme.BreatheIn">
+        <!-- Customize combined theme attributes -->
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">#0F4D66</item>
+        <!-- Add more attributes as needed -->
+    </style>
+
+</resources>

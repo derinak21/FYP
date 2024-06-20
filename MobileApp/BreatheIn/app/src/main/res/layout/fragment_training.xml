@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".TrainingFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Page 1 -->
+        <TextView
+            android:id="@+id/page11Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="220dp"
+            android:text="Instructions"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/page12Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="260dp"
+            android:text="1- Ensure the MPU sensor sits snugly on the chest"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/page13Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="310dp"
+            android:text="2- Put on the wearable garment"
+            android:textSize="16dp"/>
+
+
+        <TextView
+            android:id="@+id/page14Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="340dp"
+            android:text="3- Sit in a comfortable position"
+            android:textSize="16dp"/>
+
+
+        <!-- Page 2 -->
+
+        <TextView
+            android:id="@+id/page2Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select a breathing training type"
+            android:visibility="visible"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="220dp"
+            android:textSize="20dp"/>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="260dp"
+            android:textSize="20dp"
+            android:entries="@array/breathing_array"/>
+
+
+        <!-- Page 3 -->
+
+        <TextView
+            android:id="@+id/page3Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="When you feel ready, start!"
+            android:visibility="visible"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="220dp"
+            android:textSize="20dp"/>
+
+        <!-- Page 4 -->
+        <TextView
+            android:id="@+id/page4Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calibrating"
+            android:visibility="visible"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="220dp"
+            android:textSize="20dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="300dp"/>
+
+        <!-- Page 5 -->
+        <com.example.breathein.views.ExpandingCirclesView
+            android:id="@+id/circle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="390dp"
+            android:text="NEXT" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="390dp"
+            android:text="BACK"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/endButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="550dp"
+            android:text="END"
+            android:onClick="navigateToAnalyticsFragment"/>
+
+
+        <!-- Page 6 -->
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="200dp"
+            app:cardCornerRadius="20dp" >
+
+            <TextView
+                android:id="@+id/page6Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Results"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="50dp"
+                android:textSize="20dp"/>
+
+            <Button
+                android:id="@+id/startagainButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="210dp"
+                android:layout_marginTop="200dp"
+                android:text="Start Again"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+
+
+
+</FrameLayout>
+
