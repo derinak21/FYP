@@ -132,6 +132,219 @@ class AnalyticsFragment : Fragment() {
 
 
 
+        val lineChart: LineChart = view.findViewById(R.id.lineChart)
+
+        entries = ArrayList()
+        dataSet = LineDataSet(entries, "Label")
+        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+
+        val lineData = LineData(dataSet)
+        lineChart.data = lineData
+        dataSet.color = Color.BLACK
+        val xAxis: XAxis = lineChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawAxisLine(true)
+        xAxis.setDrawGridLines(false)
+        lineChart.description.isEnabled = false
+        val leftAxis: YAxis = lineChart.axisLeft
+        leftAxis.setDrawAxisLine(true)
+        leftAxis.setDrawGridLines(false)
+        lineChart.axisRight.isEnabled = false
+        val legend: Legend = lineChart.legend
+        legend.isEnabled = false
+        dataSet.setDrawValues(false)
+
+        val lineChart2: LineChart = view.findViewById(R.id.lineChart2)
+        entries2 = ArrayList()
+        dataSet2 = LineDataSet(entries2, "Label")
+        dataSet2.mode = LineDataSet.Mode.CUBIC_BEZIER
+        val lineData2 = LineData(dataSet2)
+        lineChart2.data = lineData2
+        dataSet2.color = Color.BLUE
+        val xAxis2: XAxis = lineChart2.xAxis
+        xAxis2.position = XAxis.XAxisPosition.BOTTOM
+        xAxis2.setDrawAxisLine(true)
+        xAxis2.setDrawGridLines(false)
+        lineChart2.description.isEnabled = false
+        val leftAxis2: YAxis = lineChart2.axisLeft
+        leftAxis2.setDrawAxisLine(true)
+        leftAxis2.setDrawGridLines(false)
+        lineChart2.axisRight.isEnabled = false
+        val legend2: Legend = lineChart2.legend
+        legend2.isEnabled = false
+        dataSet2.setDrawValues(false)
+
+        mqttHelper = MqttHelper("tcp://18.169.68.55:1883", "your_client_id")
+        mqttHelper.connect(object : MqttCallbackExtended {
+            override fun connectionLost(cause: Throwable?) {
+                Log.d("connection", "Connection lost. Attempting to reconnect...")
+            }
+
+            override fun messageArrived(topic: String?, message: MqttMessage?) {
+                val dataString = message?.toString()
+
+                Log.d("package arrived", topic.toString()+dataString.toString())
+                val user = getToken()
+
+                if (topic == "sensordata_wrist" && dataString != null){
+                    val wristsensorData = parseSensorData_wrist(dataString)
+                    if (wristsensorData != null) {
+                        temp.text = "Temperature: "+ wristsensorData?.temp+" °C"
+                        lowMediumHighView9.updateMarkerPosition(wristsensorData?.temp?.toFloatOrNull(),-10f, 15f, 25f, 80f)
+
+                        hum.text = "Humidity: "+ wristsensorData?.hum+ " %"
+                        lowMediumHighView10.updateMarkerPosition(wristsensorData?.hum?.toFloatOrNull(),0f, 30f, 50f, 100f)
+
+                        tvoc.text = "TVOC Levels: "+ wristsensorData?.tvoc
+                        lowMediumHighView11.updateMarkerPosition(wristsensorData?.tvoc?.toFloatOrNull(),0f, 200f, 500f, 65000f)
+
+                        co2.text = "CO2 Levels: "+ wristsensorData?.co2
+                        lowMediumHighView12.updateMarkerPosition(wristsensorData?.co2?.toFloatOrNull(),400f, 500f, 600f, 1500f)
+
+                        aqi.text = "Air Quality Index: "+ wristsensorData?.aqi
+                        lowMediumHighView13.updateMarkerPosition(wristsensorData?.aqi?.toFloatOrNull(),1f, 2f, 3f, 5f)
+
+                        heartrate.text = "Heart Rate: "+ wristsensorData?.bpm
+                        wristsensorData?.bpm?.toFloatOrNull()?.let { bpm ->
+                            if (entries.size >= 10) {
+                                entries.removeAt(0)
+                                for (i in entries.indices) {
+                                    entries[i].x = i.toFloat()
+                                }
+                            }
+                            dataIndex = entries.size.toFloat()
+                            entries.add(Entry(dataIndex, bpm))
+
+                            dataSet.notifyDataSetChanged()
+                            lineChart.data.notifyDataChanged()
+                            lineChart.notifyDataSetChanged()
+                            lineChart.setVisibleXRangeMaximum(10f)
+                            lineChart.moveViewToX(dataIndex)
+                        }
+                    }
+
+
+                }
+                else if(topic == "air_pollution" && dataString != null){
+                    val airdata = parseSensorData_air(dataString)
+                    aqi2.text = "AQI: "+ airdata?.current_european_aqi
+                    lowMediumHighView1.updateMarkerPosition(airdata?.current_european_aqi?.toFloatOrNull(),0f, 40f, 50f, 800f)
+
+                    pm25.text = "PM2.5: " + airdata?.pm2_5_value + " μg/m³"
+                    lowMediumHighView2.updateMarkerPosition(airdata?.pm2_5_value?.toFloatOrNull(),0f, 20f, 25f, 800f)
+
+                    pm10.text = "PM10: "+ airdata?.pm10_value+ " μg/m³"
+                    lowMediumHighView3.updateMarkerPosition(airdata?.current_european_aqi?.toFloatOrNull(),0f, 40f, 50f, 1200f)
+
+                    ozone.text = "Ozone: "+ airdata?.current_ozone+" μg/m³"
+                    lowMediumHighView4.updateMarkerPosition(airdata?.current_ozone?.toFloatOrNull(),0f, 100f, 130f, 800f)
+
+                    nitrogen.text = "Nitrogen Dioxide: "+ airdata?.current_nitrogen_dioxide+" μg/m³"
+                    lowMediumHighView5.updateMarkerPosition(airdata?.current_nitrogen_dioxide?.toFloatOrNull(),0f, 90f, 120f, 1000f)
+
+                    sulfur.text = "Sulfur Dioxide: "+ airdata?.current_sulphur_dioxide+" μg/m³"
+                    lowMediumHighView6.updateMarkerPosition(airdata?.current_sulphur_dioxide?.toFloatOrNull(),0f, 200f, 350f, 800f)
+
+                    carbon.text = "Carbon Monoxide: "+ airdata?.current_carbon_monoxide+ " μg/m³"
+                    lowMediumHighView7.updateMarkerPosition(airdata?.current_carbon_monoxide?.toFloatOrNull(),0f, 10f, 15f, 50f)
+
+
+                }
+
+                else if(topic == "fuzzyfeedback" && dataString != null) {
+//                    val feedbackValue = dataString.toFloatOrNull()
+                    val splitValues = dataString.split(",")
+                    val feedbackValue = splitValues[0].toFloatOrNull()
+                    val feedback = splitValues[1]
+                    risk.text = feedbackValue.toString()
+                    Log.d("fuzzyfeedback", dataString.toString())
+                    riskdrawing.updateMarkerPosition(feedbackValue,0f, 100f)
+
+                    if (feedbackValue != null &&  feedback=="True") {
+                        val user = getToken()
+
+                        val alertDialog = AlertDialog.Builder(requireContext())
+                            .setTitle("Asthma Attack Alert")
+                            .setMessage("You had a high likelihood of an asthma attack. Did you have an asthma attack")
+                            .setPositiveButton("Yes") { dialog, _ ->
+                                Log.d("User Response", "User chose Yes")
+                                if (user != null) {
+                                    mqttHelper.publish("attackfeedback", user.deviceid+","+"yes")
+                                }
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton("No") { dialog, _ ->
+                                Log.d("User Response", "User chose No")
+                                if (user != null) {
+                                    mqttHelper.publish("attackfeedback", user.deviceid+","+"no")
+                                }
+                                dialog.dismiss()
+                            }
+                            .create()
+
+                        alertDialog.setOnShowListener {
+                            Log.d("AlertDialog", "Showing AlertDialog")
+                        }
+
+                        alertDialog.setOnDismissListener {
+                            Log.d("AlertDialog", "Dismissing AlertDialog")
+                        }
+
+                        alertDialog.show()
+
+                    }
+
+                }
+
+
+                else if(user!= null&& topic == user.deviceid+"/iot" && dataString != null) {
+                    val values = dataString.split(",").map { it.trim() }
+                    val rr_local = values[1]
+                    Log.d("iot- respiration rate", rr_local)
+                    rr.text = "Respiration Rate: " + rr_local
+                    rr_local?.toFloatOrNull()?.let { rr_local ->
+                        if (entries2.size >= 10) {
+                            entries2.removeAt(0)
+                            for (i in entries2.indices) {
+                                entries2[i].x = i.toFloat()
+                            }
+                        }
+                        dataIndex2 = entries2.size.toFloat()
+                        entries2.add(Entry(dataIndex2, rr_local))
+
+                        dataSet2.notifyDataSetChanged()
+                        lineChart2.data.notifyDataChanged()
+                        lineChart2.notifyDataSetChanged()
+                        lineChart2.setVisibleXRangeMaximum(10f)
+                        lineChart2.moveViewToX(dataIndex2)
+                    }
+
+                }
+
+
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken?) {
+            }
+
+            override fun connectComplete(reconnect: Boolean, serverURI: String?) {
+                Log.d("connection", "Connection completed.")
+                mqttHelper.subscribe("sensordata_wrist", 1)
+                mqttHelper.subscribe("air_pollution", 1)
+                mqttHelper.subscribe("fuzzyfeedback", 1)
+                val user = getToken()
+                if (user != null) {
+                    mqttHelper.subscribe(user.deviceid+"/iot", 1)
+
+                }
+
+
+
+
+
+            }
+        })
+
         temp = view.findViewById(R.id.temperature)
         hum = view.findViewById(R.id.humidity)
         tvoc = view.findViewById(R.id.tvoc)
@@ -315,215 +528,8 @@ class AnalyticsFragment : Fragment() {
 
 
 
-        val lineChart: LineChart = view.findViewById(R.id.lineChart)
-
-        entries = ArrayList()
-        dataSet = LineDataSet(entries, "Label")
-        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-
-        val lineData = LineData(dataSet)
-        lineChart.data = lineData
-        dataSet.color = Color.BLACK
-        val xAxis: XAxis = lineChart.xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawAxisLine(true)
-        xAxis.setDrawGridLines(false)
-        lineChart.description.isEnabled = false
-        val leftAxis: YAxis = lineChart.axisLeft
-        leftAxis.setDrawAxisLine(true)
-        leftAxis.setDrawGridLines(false)
-        lineChart.axisRight.isEnabled = false
-        val legend: Legend = lineChart.legend
-        legend.isEnabled = false
-        dataSet.setDrawValues(false)
-
-        val lineChart2: LineChart = view.findViewById(R.id.lineChart2)
-        entries2 = ArrayList()
-        dataSet2 = LineDataSet(entries2, "Label")
-        dataSet2.mode = LineDataSet.Mode.CUBIC_BEZIER
-        val lineData2 = LineData(dataSet2)
-        lineChart2.data = lineData2
-        dataSet2.color = Color.BLUE
-        val xAxis2: XAxis = lineChart2.xAxis
-        xAxis2.position = XAxis.XAxisPosition.BOTTOM
-        xAxis2.setDrawAxisLine(true)
-        xAxis2.setDrawGridLines(false)
-        lineChart2.description.isEnabled = false
-        val leftAxis2: YAxis = lineChart2.axisLeft
-        leftAxis2.setDrawAxisLine(true)
-        leftAxis2.setDrawGridLines(false)
-        lineChart2.axisRight.isEnabled = false
-        val legend2: Legend = lineChart2.legend
-        legend2.isEnabled = false
-        dataSet2.setDrawValues(false)
 
 
-
-        mqttHelper = MqttHelper("tcp://18.169.68.55:1883", "your_client_id")
-        mqttHelper.connect(object : MqttCallbackExtended {
-            override fun connectionLost(cause: Throwable?) {
-                Log.d("connection", "Connection lost. Attempting to reconnect...")
-            }
-
-            override fun messageArrived(topic: String?, message: MqttMessage?) {
-                val dataString = message?.toString()
-
-                Log.d("package arrived", topic.toString()+dataString.toString())
-
-                if (topic == "sensordata_wrist" && dataString != null){
-                    val wristsensorData = parseSensorData_wrist(dataString)
-                    if (wristsensorData != null) {
-                        temp.text = "Temperature: "+ wristsensorData?.temp+" °C"
-                        lowMediumHighView9.updateMarkerPosition(wristsensorData?.temp?.toFloatOrNull(),-10f, 15f, 25f, 80f)
-
-                        hum.text = "Humidity: "+ wristsensorData?.hum+ " %"
-                        lowMediumHighView10.updateMarkerPosition(wristsensorData?.hum?.toFloatOrNull(),0f, 30f, 50f, 100f)
-
-                        tvoc.text = "TVOC Levels: "+ wristsensorData?.tvoc
-                        lowMediumHighView11.updateMarkerPosition(wristsensorData?.tvoc?.toFloatOrNull(),0f, 200f, 500f, 65000f)
-
-                        co2.text = "CO2 Levels: "+ wristsensorData?.co2
-                        lowMediumHighView12.updateMarkerPosition(wristsensorData?.co2?.toFloatOrNull(),400f, 500f, 600f, 1500f)
-
-                        aqi.text = "Air Quality Index: "+ wristsensorData?.aqi
-                        lowMediumHighView13.updateMarkerPosition(wristsensorData?.aqi?.toFloatOrNull(),1f, 2f, 3f, 5f)
-
-                        heartrate.text = "Heart Rate: "+ wristsensorData?.bpm
-                        wristsensorData?.bpm?.toFloatOrNull()?.let { bpm ->
-                            if (entries.size >= 10) {
-                                entries.removeAt(0)
-                                for (i in entries.indices) {
-                                    entries[i].x = i.toFloat()
-                                }
-                            }
-                            dataIndex = entries.size.toFloat()
-                            entries.add(Entry(dataIndex, bpm))
-
-                            dataSet.notifyDataSetChanged()
-                            lineChart.data.notifyDataChanged()
-                            lineChart.notifyDataSetChanged()
-                            lineChart.setVisibleXRangeMaximum(10f)
-                            lineChart.moveViewToX(dataIndex)
-                        }
-                    }
-
-
-                }
-                else if(topic == "air_pollution" && dataString != null){
-                    val airdata = parseSensorData_air(dataString)
-                    aqi2.text = "AQI: "+ airdata?.current_european_aqi
-                    lowMediumHighView1.updateMarkerPosition(airdata?.current_european_aqi?.toFloatOrNull(),0f, 40f, 50f, 800f)
-
-                    pm25.text = "PM2.5: " + airdata?.pm2_5_value + " μg/m³"
-                    lowMediumHighView2.updateMarkerPosition(airdata?.pm2_5_value?.toFloatOrNull(),0f, 20f, 25f, 800f)
-
-                    pm10.text = "PM10: "+ airdata?.pm10_value+ " μg/m³"
-                    lowMediumHighView3.updateMarkerPosition(airdata?.current_european_aqi?.toFloatOrNull(),0f, 40f, 50f, 1200f)
-
-                    ozone.text = "Ozone: "+ airdata?.current_ozone+" μg/m³"
-                    lowMediumHighView4.updateMarkerPosition(airdata?.current_ozone?.toFloatOrNull(),0f, 100f, 130f, 800f)
-
-                    nitrogen.text = "Nitrogen Dioxide: "+ airdata?.current_nitrogen_dioxide+" μg/m³"
-                    lowMediumHighView5.updateMarkerPosition(airdata?.current_nitrogen_dioxide?.toFloatOrNull(),0f, 90f, 120f, 1000f)
-
-                    sulfur.text = "Sulfur Dioxide: "+ airdata?.current_sulphur_dioxide+" μg/m³"
-                    lowMediumHighView6.updateMarkerPosition(airdata?.current_sulphur_dioxide?.toFloatOrNull(),0f, 200f, 350f, 800f)
-
-                    carbon.text = "Carbon Monoxide: "+ airdata?.current_carbon_monoxide+ " μg/m³"
-                    lowMediumHighView7.updateMarkerPosition(airdata?.current_carbon_monoxide?.toFloatOrNull(),0f, 10f, 15f, 50f)
-
-
-                }
-
-                else if(topic == "fuzzyfeedback" && dataString != null) {
-//                    val feedbackValue = dataString.toFloatOrNull()
-                    val splitValues = dataString.split(",")
-                    val feedbackValue = splitValues[0].toFloatOrNull()
-                    val feedback = splitValues[1]
-                    risk.text = feedbackValue.toString()
-                    Log.d("fuzzyfeedback", dataString.toString())
-                    riskdrawing.updateMarkerPosition(feedbackValue,0f, 100f)
-
-                    if (feedbackValue != null &&  feedback=="True") {
-                        val user = getToken()
-
-                        val alertDialog = AlertDialog.Builder(requireContext())
-                            .setTitle("Asthma Attack Alert")
-                            .setMessage("You had a high likelihood of an asthma attack. Did you have an asthma attack")
-                            .setPositiveButton("Yes") { dialog, _ ->
-                                Log.d("User Response", "User chose Yes")
-                                if (user != null) {
-                                    mqttHelper.publish("attackfeedback", user.deviceid+","+"yes")
-                                }
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton("No") { dialog, _ ->
-                                Log.d("User Response", "User chose No")
-                                if (user != null) {
-                                    mqttHelper.publish("attackfeedback", user.deviceid+","+"no")
-                                }
-                                dialog.dismiss()
-                            }
-                            .create()
-
-                        alertDialog.setOnShowListener {
-                            Log.d("AlertDialog", "Showing AlertDialog")
-                        }
-
-                        alertDialog.setOnDismissListener {
-                            Log.d("AlertDialog", "Dismissing AlertDialog")
-                        }
-
-                        alertDialog.show()
-
-                    }
-
-                }
-
-
-                else if(topic == "iot" && dataString != null) {
-                    val values = dataString.split(",").map { it.trim() }
-                    val rr_local = values[1]
-                    Log.d("iot- respiration rate", rr_local)
-                    rr.text = "Respiration Rate: " + rr_local
-                    rr_local?.toFloatOrNull()?.let { rr_local ->
-                        if (entries2.size >= 10) {
-                            entries2.removeAt(0)
-                            for (i in entries2.indices) {
-                                entries2[i].x = i.toFloat()
-                            }
-                        }
-                        dataIndex2 = entries2.size.toFloat()
-                        entries2.add(Entry(dataIndex2, rr_local))
-
-                        dataSet2.notifyDataSetChanged()
-                        lineChart2.data.notifyDataChanged()
-                        lineChart2.notifyDataSetChanged()
-                        lineChart2.setVisibleXRangeMaximum(10f)
-                        lineChart2.moveViewToX(dataIndex2)
-                    }
-
-                }
-
-
-            }
-
-            override fun deliveryComplete(token: IMqttDeliveryToken?) {
-            }
-
-            override fun connectComplete(reconnect: Boolean, serverURI: String?) {
-                Log.d("connection", "Connection completed.")
-                mqttHelper.subscribe("sensordata_wrist", 1)
-                mqttHelper.subscribe("air_pollution", 1)
-                mqttHelper.subscribe("fuzzyfeedback", 1)
-                mqttHelper.subscribe("iot", 1)
-
-
-
-
-
-            }
-        })
 
         lineChart2.invalidate()
 

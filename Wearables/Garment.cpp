@@ -169,7 +169,7 @@ void reconnect() {
     // Attempt to connect
     if (mqttClient.connect("ESP32Client", mqtt_user, mqtt_password)) {
       Serial.println("connected");
-      mqttClient.subscribe("control"); 
+      mqttClient.subscribe("da621/control"); 
       mqttClient.subscribe("da621/monitor"); 
 
     } else {
@@ -223,8 +223,8 @@ init_sensors();
   mqttClient.setServer(mqtt_server, mqtt_port);
   mqttClient.setCallback(callback);
   mqttClient.connect("ESP32Client", mqtt_user, mqtt_password);
-  mqttClient.subscribe("control"); 
-  mqttClient.subscribe("monitor"); 
+  mqttClient.subscribe("da621/control"); 
+  mqttClient.subscribe("da621/monitor"); 
 
 }
 
@@ -432,7 +432,7 @@ void read_data()
               char message[100]; 
               if(control){
                 sprintf(message, "Minima - Timestamp: %lu", lastPeakTime); // Format message with timestamp
-                mqttClient.publish("iot", message); // Publish message with timestamp
+                mqttClient.publish("da621/iot", message); // Publish message with timestamp
               }
               
             }
@@ -440,7 +440,7 @@ void read_data()
 //            fifoBuffer.clear(); // Erase all elements from the vector
     //        char message[100]; 
     //        snprintf(message, sizeof(message), "Minima");
-    //        mqttClient.publish("iot", "Minima");
+    //        mqttClient.publish("da621/iot", "Minima");
         }
     
         if (sum2 < 3 && sum1 > 2 && (millis() - lastPeakTime2) > cooldownPeriod && (millis() - lastPeakTime) > 500) {
@@ -449,7 +449,7 @@ void read_data()
               char message[100]; 
               if(control){
                 sprintf(message, "Maxima - Timestamp: %lu", lastPeakTime2); // Format message with timestamp
-                mqttClient.publish("iot", message); // Publish message with timestamp
+                mqttClient.publish("da621/iot", message); // Publish message with timestamp
               }
               else if(monitor){
                 float monitordiff = millis()-lastPeakTime2;
@@ -460,7 +460,7 @@ void read_data()
                 sprintf(message, "da621,%s", rrStr); // Format message with timestamp
                 
                 Serial.println(message); // Print the message for debugging
-                mqttClient.publish("iot", message); // Publish message with timestamp
+                mqttClient.publish("da621/iot", message); // Publish message with timestamp
               }
               lastPeakTime2 = millis(); // Update last peak time
 
