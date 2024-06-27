@@ -40,19 +40,12 @@ MAX30105 particleSensor;
 PeakDetection peakDetection;
 KickFiltersRT<float> filtersRT;
 #define debug Serial //Uncomment this line if you're using an Uno or ESP
-//#define debug SerialUSB //Uncomment this line if you're using a SAMD21
 const float fs = 100;
 const int BUFFER_SIZE = 10;
 
 
 void callback(char* topic, byte* payload, unsigned int length) {
-//  Serial.print("Message arrived [");
-//  Serial.print(topic);
-//  Serial.print("] ");
-//  for (int i = 0; i < length; i++) {
-//    Serial.print((char)payload[i]);
-//  }
-//  Serial.println();
+
 
   String message = "";
   for (int i = 0; i < length; i++) {
@@ -70,10 +63,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void reconnect() {
-  // Loop until we're reconnected
   while (!mqttClient.connected()) {
     Serial.print("Attempting MQTT connection...");
-    // Attempt to connect
     if (mqttClient.connect("ESP32Client2", mqtt_user, mqtt_password)) {
       Serial.println("connected");
       mqttClient.subscribe("da621/monitor"); 
@@ -82,7 +73,6 @@ void reconnect() {
       Serial.print("failed, rc=");
       Serial.print(mqttClient.state());
       Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
       delay(5000);
     }
   }
@@ -193,29 +183,21 @@ void loop()
 
 if(monitor){
 
-   double lpfiltered = filtersRT.lowpass(particleSensor.getIR(), 4, fs);
-
-    double hpfiltered = filtersRT.highpass(lpfiltered, 1, fs);
-
-    double difference = hpfiltered- last;
-//    debug.println(difference);
-
-    last = hpfiltered;
-    double squared = difference*difference;
-    peakDetection.add(squared);                     // adds a new data point
-    double moving = peakDetection.getFilt();
-    int peak = peakDetection.getPeak();
-    if(peak ==1 && inter>2000){
-       lasttime = millis();
-  //     debug.println(moving+100);
-  
+  double lpfiltered = filtersRT.lowpass(particleSensor.getIR(), 4, fs);
+  double hpfiltered = filtersRT.highpass(lpfiltered, 1, fs);
+  double difference = hpfiltered- last;
+  last = hpfiltered;
+  double squared = difference*difference;
+  peakDetection.add(squared);                     // adds a new data point
+  double moving = peakDetection.getFilt();
+  int peak = peakDetection.getPeak();
+  if(peak ==1 && inter>2000){
+      lasttime = millis();  
     }
     if((difference>0)){
       if(notbeat&&(millis()-la)>500){
-  //       debug.println(difference+100);
          float bpm = 60000/(millis()-la);
          la= millis();
-  //       debug.println(bpm);
          bpmValues.push_back(bpm);
          if (bpmValues.size() == 5) {
           float sumBPM = 0;
@@ -229,7 +211,6 @@ if(monitor){
           BME_T = bme.readTemperature();
           BME_RH = bme.readHumidity();
         
-          // Print the temperature and humidity readings
           Serial.print("Temperature: ");
           Serial.print(BME_T);
           Serial.println(" °C");
@@ -273,7 +254,6 @@ if(monitor){
   
       }
       else{
-  //      debug.println(difference);
   
       }
       notbeat = false;
@@ -281,12 +261,9 @@ if(monitor){
     }
     else{
       notbeat=true;
-  //      debug.println(difference);
   
     }
   
-  
-    
     double difference2 = (moving-last2)*100;
     last2= moving;
   

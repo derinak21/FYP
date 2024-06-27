@@ -47,56 +47,48 @@ def create_fuzzy_system(restingheartrate, trigger):
     hum["high"] = fuzz.trapmf(hum.universe, [40, 50, 100, 100])
 
 
-    # TVOC
-    tvoc = ctrl.Antecedent(np.arange(400, 65000, 1), "Volatile Organic Compounds")
-    tvoc["low"] = fuzz.trimf(tvoc.universe, [400, 400, 1000])
-    tvoc["high"] = fuzz.trimf(tvoc.universe, [800, 65000, 65000])
 
     # AQI
     aqi1 = ctrl.Antecedent(np.arange(1, 5, 1), "aqi1")
-    aqi1["low"] = fuzz.trimf(aqi1.universe, [1, 2, 4])
-    aqi1["high"] = fuzz.trimf(aqi1.universe, [2, 4, 5])
+    aqi1["low"] = fuzz.trapmf(aqi1.universe, [1, 1, 2, 4])
+    aqi1["high"] = fuzz.trapmf(aqi1.universe, [2, 4, 5, 5])
 
 
     # AQI2
     aqi2 = ctrl.Antecedent(np.arange(1, 5, 1), "aqi2")
-    aqi2["low"] = fuzz.trimf(aqi2.universe, [0, 40, 60])
-    aqi2["high"] = fuzz.trimf(aqi2.universe, [40, 60, 1200])
+    aqi2["low"] = fuzz.trapmf(aqi2.universe, [0, 0, 40, 100])
+    aqi2["high"] = fuzz.trapmf(aqi2.universe, [40, 100, 1200, 1200])
 
     # pm2.5
     pm2_5 = ctrl.Antecedent(np.arange(0, 800, 1), "PM2.5")
-    pm2_5["low"] = fuzz.trimf(pm2_5.universe, [0, 20, 25])
-    pm2_5["high"] = fuzz.trimf(pm2_5.universe, [20, 25, 800])
+    pm2_5["low"] = fuzz.trapmf(pm2_5.universe, [0, 0, 12, 35])
+    pm2_5["high"] = fuzz.trapmf(pm2_5.universe, [12, 35, 800, 800])
 
     # pm10
     pm10 = ctrl.Antecedent(np.arange(0, 1200, 1), "PM10")
-    pm10["low"] = fuzz.trimf(pm10.universe, [0, 40, 50])
-    pm10["high"] = fuzz.trimf(pm10.universe, [40, 50, 1200])
+    pm10["low"] = fuzz.trapmf(pm10.universe, [0, 0, 55, 155])
+    pm10["high"] = fuzz.trapmf(pm10.universe, [55, 155, 155, 1200])
 
 
     # nitrogen_dioxide
     nitrogen_dioxide = ctrl.Antecedent(np.arange(0, 1000, 1), "Nitrogen Dioxide")
-    nitrogen_dioxide["low"] = fuzz.trimf(nitrogen_dioxide.universe, [0, 90, 120])
-    nitrogen_dioxide["high"] = fuzz.trimf(nitrogen_dioxide.universe, [90, 120, 1000])
+    nitrogen_dioxide["low"] = fuzz.trapmf(nitrogen_dioxide.universe, [0, 0, 101, 188])
+    nitrogen_dioxide["high"] = fuzz.trapmf(nitrogen_dioxide.universe, [101, 188, 1000, 1000])
 
 
     # sulfur_dioxide
     sulfur_dioxide = ctrl.Antecedent(np.arange(0, 1250, 1), "Sulfur Dioxide")
-    sulfur_dioxide["low"] = fuzz.trimf(sulfur_dioxide.universe, [0, 200, 350])
-    sulfur_dioxide["high"] = fuzz.trimf(sulfur_dioxide.universe, [200, 350, 1250])
+    sulfur_dioxide["low"] = fuzz.trapmf(sulfur_dioxide.universe, [0, 0, 35, 196])
+    sulfur_dioxide["high"] = fuzz.trapmf(sulfur_dioxide.universe, [35, 196, 1250, 1250])
 
-    # carbon_monoxide
-    carbon_monoxide = ctrl.Antecedent(np.arange(0, 50, 1), "Carbon Monoxide")
-    carbon_monoxide["low"] = fuzz.trimf(carbon_monoxide.universe, [0, 9, 12])
-    carbon_monoxide["high"] = fuzz.trimf(carbon_monoxide.universe, [9, 12, 50])
+
 
 
     # Define output
     likelihood = ctrl.Consequent(np.arange(0, 101, 1), "likelihood")
-    likelihood['low'] = fuzz.trimf(likelihood.universe, [0, 25, 40])
+    likelihood['low'] = fuzz.trapmf(likelihood.universe, [0, 0, 25, 40])
     likelihood['medium'] = fuzz.trimf(likelihood.universe, [30, 50, 70])
-    likelihood['high'] = fuzz.trimf(likelihood.universe, [60, 90, 100])
-    likelihood['superhigh'] = fuzz.trimf(likelihood.universe, [60, 100, 100])
+    likelihood['high'] = fuzz.trapmf(likelihood.universe, [60, 90, 100, 100])
 
     rule1 = ctrl.Rule(hr['normal'] & rr['normal'] & aqi1['low'] & aqi2['low'], likelihood['low'])
     rule2 = ctrl.Rule(hr['high'] | rr['high'], likelihood['high'])
@@ -112,21 +104,21 @@ def create_fuzzy_system(restingheartrate, trigger):
 
     if "Temperature" in trigger:
         medium_conditions |= temp['high']
+        medium_conditions |= temp['low']
         low_conditions &= temp['ideal']
         medium_conditions_indoor |= temp['high']
+        medium_conditions_indoor |= temp['low']
         low_conditions_indoor &= temp['ideal']
 
     if "Humidity" in trigger:
         medium_conditions |= hum['low']
+        medium_conditions |= hum['high']
         low_conditions &= hum['ideal']
         medium_conditions_indoor |= hum['low']
+        medium_conditions_indoor |= hum['high']
         low_conditions_indoor &= hum['ideal']
 
-    if "Volatile Organic Compounds" in trigger:
-        medium_conditions |= tvoc['high']
-        low_conditions &= tvoc['low']
-        medium_conditions_indoor |= tvoc['high']
-        low_conditions_indoor &= tvoc['low']
+ 
 
     if "PM2.5" in trigger:
         medium_conditions |= pm2_5['high']
@@ -144,9 +136,7 @@ def create_fuzzy_system(restingheartrate, trigger):
         medium_conditions |= nitrogen_dioxide['high']
         low_conditions &= nitrogen_dioxide['low']
 
-    if "Carbon Monoxide" in trigger:
-        medium_conditions |= carbon_monoxide['high']
-        low_conditions &= carbon_monoxide['low']
+
 
     combined_rule_low = ctrl.Rule(low_conditions, likelihood['low'])
     combined_rule_medium = ctrl.Rule(medium_conditions & hr['normal'] & rr['normal'], likelihood['medium'])
